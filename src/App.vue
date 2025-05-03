@@ -5,12 +5,23 @@ const tasks = ref([])
 const newTask = ref('')
 
 const addTask = () => {
-  tasks.value.push({
-    id: tasks.value.length + 1,
-    text: newTask.value,
-    completed: false
-  })
-  newTask.value = ''
+  if (newTask.value !== '') {
+    tasks.value.push({
+      id: tasks.value.length + 1,
+      text: newTask.value,
+      completed: false
+    })
+    newTask.value = ''
+  }
+}
+
+const removeTask = (task) => {
+  tasks.value = tasks.value.filter(t => t.id !== task.id)
+}
+
+const toggleTask = (task) => {
+  task.completed == !task.completed
+  console.log(task.completed)
 }
 
 </script>
@@ -22,12 +33,12 @@ const addTask = () => {
 
     <ul>
       <li v-for="task in tasks" :key="task.id">
+        <input type="checkbox" @change="toggleTask(task)" v-model="task.completed">
         {{ task.text }}
+        <button @click="removeTask(task)">Remove</button>
       </li>
     </ul>
   </div>
 </template>
 
-<style scoped>
-
-</style>
+<style scoped></style>
